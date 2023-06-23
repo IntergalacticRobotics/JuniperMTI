@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.Auto.RR.trajectorysequence.TrajectorySeque
 import org.firstinspires.ftc.teamcode.Mechanism.ColorSensorMech;
 import org.firstinspires.ftc.teamcode.Mechanism.ConeTransporter;
 
-@Autonomous
 public class ColorSensorTest extends LinearOpMode {
 
     private SampleMecanumDrive drive;
