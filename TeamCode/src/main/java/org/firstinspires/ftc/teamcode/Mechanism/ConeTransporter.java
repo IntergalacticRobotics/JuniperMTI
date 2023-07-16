@@ -36,7 +36,6 @@ public class ConeTransporter extends HWMap {
 
 
     //    public Map<LinearSlidesLevels, Double> linearSlidesLevels;
-    public double V15 = 0;
 
     // Tele-Op
     public static double LINEAR_SLIDES_LOW = 372.5;// 13.5 inches converted to mm(low junction)
