@@ -22,20 +22,41 @@ public class FieldCentricDriveAcceleration extends HWMap {
     public double rightFrontEncoder;
     public double leftFrontEncoder;
 
-    public double leftBackPIDVel;
-    public double rightBackPIDVel;
-    public double rightFrontPIDVel;
-    public double leftFrontPIDVel;
+    //    public double leftBackPIDVel;
+//    public double rightBackPIDVel;
+//    public double rightFrontPIDVel;
+//    public double leftFrontPIDVel;
+//    double lfp = 0, lfi = 0, lfd;
+//    double lbp = 0, lbi = 0, lbd;
+//    double rfp = 0, rfi = 0, rfd;
+//    double rbp = 0, rbi = 0, rbd;
     public double rotationEffectivness = 0.7;
     public double xyEffectivness = 0.9;
     public float globalPitchAngle;
     //Max Accel/Decel in Power Per Second
     public static double maxAccel = 0.05;
     public static double maxDecel = 0.05;
-    double lfp = 0, lfi = 0,lfd;
-    double lbp = 0, lbi = 0,lbd;
-    double rfp = 0, rfi = 0,rfd;
-    double rbp = 0, rbi = 0,rbd;
+
+    // Constants for feedforward control
+    private static final double ROBOT_MASS_KG = 20.0; // Adjust this value based on your robot's weight
+    private static final double DESIRED_LINEAR_VELOCITY = 1.0; // Adjust this value to your desired linear velocity (meters per second)
+    private static final double K_FEEDFORWARD_X = 0.2; // Feedforward coefficient for X direction
+    private static final double K_FEEDFORWARD_Y = 0.2; // Feedforward coefficient for Y direction
+    private static final double K_FEEDFORWARD_TURN = 0.1; // Feedforward coefficient for rotational motion
+
+    // PID control parameters (placeholders, tune them for your robot)
+    private static final double K_P = 1.0;
+    private static final double K_I = 0.0;
+    private static final double K_D = 0.0;
+
+    // Variables to store previous errors for PID control
+    private double prevErrorX = 0.0;
+    private double prevErrorY = 0.0;
+    private double prevErrorTurn = 0.0;
+
+    // Timer for PID control calculations
+    private ElapsedTime pidTimer = new ElapsedTime();
+
     private ElapsedTime loopTimer = new ElapsedTime();
     private PIDVelo PID = new PIDVelo();
 
@@ -74,7 +95,7 @@ public class FieldCentricDriveAcceleration extends HWMap {
          return globalPitchAngle;
      }
  */
-    public void addTelemetry(){
+    public void addTelemetry() {
         telemetry.addData("Left Front", leftFrontPower);
         telemetry.addData("Right Front", rightFrontPower);
         telemetry.addData("Left Back", leftBackPower);
@@ -84,6 +105,7 @@ public class FieldCentricDriveAcceleration extends HWMap {
         telemetry.addData("Left Back MAH", leftBackMotor.getCurrent(CurrentUnit.MILLIAMPS));
         telemetry.addData("Right Back MAH", rightBackMotor.getCurrent(CurrentUnit.MILLIAMPS));
     }
+
     public void drive(double gamepadX, double gamepadY, double gamepadRot, boolean rotationToggle, boolean strafeToggle) {
         if (rotationToggle) {
             gamepadRot *= ROTATION_TOGGLE_FACTOR;
@@ -92,14 +114,17 @@ public class FieldCentricDriveAcceleration extends HWMap {
             gamepadX *= STRAFE_TOGGLE_FACTOR;
             gamepadY *= STRAFE_TOGGLE_FACTOR;
         }
-
+        // Calculate feedforward terms
+        double feedforwardX = ROBOT_MASS_KG * DESIRED_LINEAR_VELOCITY * K_FEEDFORWARD_X;
+        double feedforwardY = ROBOT_MASS_KG * DESIRED_LINEAR_VELOCITY * K_FEEDFORWARD_Y;
+        double feedforwardTurn = ROBOT_MASS_KG * DESIRED_LINEAR_VELOCITY * K_FEEDFORWARD_TURN;
 
         // gamepadRot is negated because in math, a counterclockwise rotation is positive
         // (think unit circle), but on the controller, we expect the robot to rotate clockwise when
         // we push the stick to the right. Pushing the stick to the right outputs a positive value.
-        double turn = -gamepadRot * rotationEffectivness;
-        double controllerX = gamepadX * xyEffectivness;
-        double controllerY = gamepadY * xyEffectivness;
+        double turn = -gamepadRot * rotationEffectivness + feedforwardTurn;
+        double controllerX = gamepadX * xyEffectivness + feedforwardX;
+        double controllerY = gamepadY * xyEffectivness + feedforwardY;
         double[] controllerVector = {controllerX, controllerY};
 //        telemetry.addData("controllerVector[0]: ", controllerVector[0]);
 //        telemetry.addData("controllerVector[1]: ", controllerVector[1]);
@@ -141,15 +166,20 @@ public class FieldCentricDriveAcceleration extends HWMap {
             leftBackPower /= power + Math.abs(turn);
             rightBackPower /= power + Math.abs(turn);
         }
-        leftBackPIDVel = PID.Controller(leftBackPower, leftBackMotor.getVelocity(),lbp,lbi,lbd);
-        leftFrontPIDVel = PID.Controller(leftFrontPIDVel, leftFrontMotor.getVelocity(),lfp,lfi,lfd);
-        rightBackPIDVel = PID.Controller(rightBackPower, rightBackMotor.getVelocity(),rbp,rbi,rbd);
-        rightFrontPIDVel = PID.Controller(rightFrontPower, rightFrontMotor.getVelocity(),rfp,rfi,rfd);
+//        leftBackPIDVel = PID.Controller(leftBackPower, PID.ticksToSpeed(leftBackMotor.getVelocity()), lbp, lbi, lbd);
+//        leftFrontPIDVel = PID.Controller(leftFrontPIDVel, PID.ticksToSpeed(leftFrontMotor.getVelocity()), lfp, lfi, lfd);
+//        rightBackPIDVel = PID.Controller(rightBackPower, PID.ticksToSpeed(rightBackMotor.getVelocity()), rbp, rbi, rbd);
+//        rightFrontPIDVel = PID.Controller(rightFrontPower, PID.ticksToSpeed(rightFrontMotor.getVelocity()), rfp, rfi, rfd);
 
-        leftBackMotor.setPower(leftBackPIDVel);
-        leftFrontMotor.setPower(leftFrontPIDVel);
-        rightBackMotor.setPower(rightBackPIDVel);
-        rightFrontMotor.setPower(rightFrontPIDVel);
+
+        leftBackMotor.setPower(leftBackPower);
+        leftFrontMotor.setPower(leftFrontPower);
+        rightBackMotor.setPower(rightBackPower);
+        rightFrontMotor.setPower(rightFrontPower);
+        //leftBackMotor.setPower(leftBackPIDVel);
+//        leftFrontMotor.setPower(leftFrontPIDVel);
+//        rightBackMotor.setPower(rightBackPIDVel);
+//        rightFrontMotor.setPower(rightFrontPIDVel);
         loopTimer.reset();
     }
 

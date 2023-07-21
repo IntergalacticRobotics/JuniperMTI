@@ -10,7 +10,7 @@ public class PIDVelo extends LinearOpMode {
     double integralSum = 0, lastError = 0;
     ElapsedTime timer = new ElapsedTime();
     DcMotorEx motor;
-
+    double motorTicksPerRot = 384.5;
     @Override
     public void runOpMode() throws InterruptedException {
         motor = hardwareMap.get(DcMotorEx.class, "motor");
@@ -31,5 +31,12 @@ public class PIDVelo extends LinearOpMode {
         double output = (error * p) + (derivative * d) + (integralSum * i);
 
         return output;
+    }
+    public double ff(double reference, double current, double Kp, double Kv){
+        return Kp * (reference - current) + Kv * (reference);
+    }
+    public double ticksToSpeed(double ticksPerSec){
+        double speed = motorTicksPerRot/ticksPerSec;
+        return speed;
     }
 }
