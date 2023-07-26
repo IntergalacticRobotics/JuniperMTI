@@ -13,9 +13,9 @@ public class TeleopAcceleration extends LinearOpMode {
 
     // declare class variables here
     private Controller controller;
-    private FieldCentricDriveAcceleration fieldCentricDrive;
+    private FieldCentricDriveAccelDecel fieldCentricDrive;
     private LinearSlides linearSLides;
-    private MotionProfile motionProfile;
+
     // Check if B is pressed
     private boolean b_Press = false;
     public int triggerPressCount = 0;
@@ -32,9 +32,8 @@ public class TeleopAcceleration extends LinearOpMode {
         try {
             // setup
             controller = new Controller(gamepad1, gamepad2);
-            fieldCentricDrive = new FieldCentricDriveAcceleration(telemetry, hardwareMap);
+            fieldCentricDrive = new FieldCentricDriveAccelDecel(telemetry, hardwareMap);
             linearSLides = new LinearSlides(telemetry, hardwareMap);
-            motionProfile = new MotionProfile();
 
         } catch (Exception exception) {
             telemetry.addLine("Outside of the while loop:");
@@ -126,7 +125,7 @@ public class TeleopAcceleration extends LinearOpMode {
                     stackState = false;
                     triggerPressCount = 0;
                     if (linearSLides.target == LinearSlides.Ls.NORM.level) {
-                        linearSLides.setHeight(LinearSlides.Ls.IN_CONE.level);
+                        LinearSlides.setHeight(LinearSlides.Ls.IN_CONE.level);
                     } else {
                         linearSLides.setHeight(LinearSlides.Ls.NORM.level);
                     }

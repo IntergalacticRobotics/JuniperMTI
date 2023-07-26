@@ -28,10 +28,6 @@ public class FieldCentricDrive extends HWMap {
     public double rotationEffectivness = 0.7;
     public double xyEffectivness = 0.9;
     public float globalPitchAngle;
-    //Max Accel/Decel in Power Per Second
-    public static double maxAccel = 0.05;
-    public static double maxDecel = 0.05;
-
     private ElapsedTime loopTimer = new ElapsedTime();
 
     Orientation lastAngle = new Orientation();
@@ -88,7 +84,6 @@ public class FieldCentricDrive extends HWMap {
             gamepadX *= STRAFE_TOGGLE_FACTOR;
             gamepadY *= STRAFE_TOGGLE_FACTOR;
         }
-
 
         // gamepadRot is negated because in math, a counterclockwise rotation is positive
         // (think unit circle), but on the controller, we expect the robot to rotate clockwise when
