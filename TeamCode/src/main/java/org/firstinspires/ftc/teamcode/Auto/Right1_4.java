@@ -21,7 +21,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class Right1_5 extends LinearOpMode {
+public class Right1_4 extends LinearOpMode {
     private OpenCvCamera camera;
     private Detection detection;
     private BNO055IMU imu;
@@ -79,31 +79,31 @@ public class Right1_5 extends LinearOpMode {
     private double F_preYOff =	0.0	; //TODO: Field Preload junction Y offset
     private double F_preAngOff =	5.0	; //TODO: Field Preload junction Y offset
 
-    private double F_stackXOff1 = 	0	; //TODO: Stack X offset Cycle 1
+    private double F_stackXOff1 = 	-1	; //TODO: Stack X offset Cycle 1
     private double F_stackYOff1 = 	0	; //TODO: Stack Y offset Cycle 1
     private double F_stackAngOff1 = 	0.0	; //TODO: Stack Angle offset Cycle 1
-    private double F_cycleXOff1 = 	0.0	; //TODO: Field cycle junction X offset Cycle 1
+    private double F_cycleXOff1 = 	1.0	; //TODO: Field cycle junction X offset Cycle 1
     private double F_cycleYOff1 = 	-1.5	; //TODO: Field cycle junction Y offset Cycle 1
     private double F_cycleAngOff1 = 	0.0	; //TODO: cycle Angle offset Cycle 1
 
-    private double F_stackXOff2 = 	0	; //TODO: Stack X offset Cycle 2
+    private double F_stackXOff2 = 	-1	; //TODO: Stack X offset Cycle 2
     private double F_stackYOff2 = 	0	; //TODO: Stack Y offset Cycle 2
     private double F_stackAngOff2 = 	0.0	; //TODO: Stack Angle offset Cycle 2
-    private double F_cycleXOff2 = 	-0.0	; //TODO: Field cycle junction X offset Cycle 2
+    private double F_cycleXOff2 = 	1.0	; //TODO: Field cycle junction X offset Cycle 2
     private double F_cycleYOff2 = 	-1.5	; //TODO: Field cycle junction Y offset Cycle 2
     private double F_cycleAngOff2 = 	0.0	; //TODO: cycle Angle offset Cycle 2
 
-    private double F_stackXOff3 = 	0	; //TODO: Stack X offset Cycle 3
+    private double F_stackXOff3 = 	-1	; //TODO: Stack X offset Cycle 3
     private double F_stackYOff3 = 	0	; //TODO: Stack Y offset Cycle 3
     private double F_stackAngOff3 = 	0.0	; //TODO: Stack Angle offset Cycle 3
-    private double F_cycleXOff3 = 	-0.0	; //TODO: Field cycle junction X offset Cycle 3
+    private double F_cycleXOff3 = 	1.0	; //TODO: Field cycle junction X offset Cycle 3
     private double F_cycleYOff3 = 	 -1.5	; //TODO: Field cycle junction Y offset Cycle 3
     private double F_cycleAngOff3 = 	0.0	; //TODO: cycle Angle offset Cycle 3
 
-    private double F_stackXOff4 = 	0	; //TODO: Stack X offset Cycle 3
+    private double F_stackXOff4 = 	-1	; //TODO: Stack X offset Cycle 3
     private double F_stackYOff4 = 	0	; //TODO: Stack Y offset Cycle 3
     private double F_stackAngOff4 = 	0.0	; //TODO: Stack Angle offset Cycle 3
-    private double F_cycleXOff4 = 	-0.0	; //TODO: Field cycle junction X offset Cycle 3
+    private double F_cycleXOff4 = 	1.0	; //TODO: Field cycle junction X offset Cycle 3
     private double F_cycleYOff4 = 	 -1.5	; //TODO: Field cycle junction Y offset Cycle 3
     private double F_cycleAngOff4 = 	0.0	; //TODO: cycle Angle offset Cycle 3
 
@@ -351,7 +351,7 @@ public class Right1_5 extends LinearOpMode {
                     coneTransporter.setHeight(ConeTransporter.equate(ConeTransporter.LINEAR_SLIDES_NORM));
                 })
                 .lineToLinearHeading(new Pose2d(-34 + (-24 * numericalTag), 12, Math.toRadians(269)), SampleMecanumDrive.getVelocityConstraint(48.0, 3.0, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(48.0))
-                .back(14)
+                .back(6)
                 .UNSTABLE_addTemporalMarkerOffset(0, () -> {
                     coneTransporter.setHeight(ConeTransporter.equate(ConeTransporter.LINEAR_SLIDES_IN_CONE));
                 })
