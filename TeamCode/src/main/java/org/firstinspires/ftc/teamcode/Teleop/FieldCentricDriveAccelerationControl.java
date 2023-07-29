@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Core.HWMap;
 
-public class FieldCentricDriveAccelDecel extends HWMap {
+public class FieldCentricDriveAccelerationControl extends HWMap {
 
     public double STRAFE_TOGGLE_FACTOR = 0.5;
     public double ROTATION_TOGGLE_FACTOR = 0.5;
@@ -36,7 +36,7 @@ public class FieldCentricDriveAccelDecel extends HWMap {
         telemetry.addData("Left Back MAH", leftBackMotor.getCurrent(CurrentUnit.MILLIAMPS));
         telemetry.addData("Right Back MAH", rightBackMotor.getCurrent(CurrentUnit.MILLIAMPS));
     }
-    public FieldCentricDriveAccelDecel(Telemetry telemetry, HardwareMap hardwareMap) {
+    public FieldCentricDriveAccelerationControl(Telemetry telemetry, HardwareMap hardwareMap) {
         super(telemetry, hardwareMap);
     }
 

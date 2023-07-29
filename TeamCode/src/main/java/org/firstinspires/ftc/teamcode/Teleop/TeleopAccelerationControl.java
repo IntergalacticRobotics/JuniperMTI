@@ -9,11 +9,11 @@ import org.firstinspires.ftc.teamcode.Mechanism.LinearSlides;
 import java.util.Objects;
 
 @TeleOp(name = "Tele-op Acceleration")
-public class TeleopAcceleration extends LinearOpMode {
+public class TeleopAccelerationControl extends LinearOpMode {
 
     // declare class variables here
     private Controller controller;
-    private FieldCentricDriveAccelDecel fieldCentricDrive;
+    private FieldCentricDriveAccelerationControl fieldCentricDrive;
     private LinearSlides linearSLides;
 
     // Check if B is pressed
@@ -32,7 +32,7 @@ public class TeleopAcceleration extends LinearOpMode {
         try {
             // setup
             controller = new Controller(gamepad1, gamepad2);
-            fieldCentricDrive = new FieldCentricDriveAccelDecel(telemetry, hardwareMap);
+            fieldCentricDrive = new FieldCentricDriveAccelerationControl(telemetry, hardwareMap);
             linearSLides = new LinearSlides(telemetry, hardwareMap);
 
         } catch (Exception exception) {
