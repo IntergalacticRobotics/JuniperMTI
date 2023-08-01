@@ -1,14 +1,18 @@
 package org.firstinspires.ftc.teamcode.Core;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Auto.RR.drive.DriveConstants;
 
 /**
  * This class contains all the hardware components that are programmed on our robot and are mapped to the robot as well.
@@ -24,8 +28,8 @@ public class HWMap {
 
     public DcMotorEx linearSlides;
 
-    //IMU?
-    public BNO055IMU imu;
+    //IMU
+    public IMU imu;
     public static double imuAngle;
 
     //Servos
@@ -60,7 +64,14 @@ public class HWMap {
         linearSlides = hardwareMap.get(DcMotorEx.class, "LS");
 
         //IMU
-        imu = this.hardwareMap.get(BNO055IMU.class, "imu");
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(
+                new RevHubOrientationOnRobot(
+                        RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD,
+                        RevHubOrientationOnRobot.UsbFacingDirection.LEFT
+                )
+        );
+        imu.initialize(parameters);
 
         //Mapping Servos
         gripper = hardwareMap.get(Servo.class, "gripper");
@@ -96,14 +107,15 @@ public class HWMap {
     }
 
     public double readFromIMU() {
-        imuAngle = -imu.getAngularOrientation().firstAngle;
+        imuAngle = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         return imuAngle;
     }
 
+/*    //OLD
     public void initializeIMU() {
         // don't touch please
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
-    }
+    }*/
 }

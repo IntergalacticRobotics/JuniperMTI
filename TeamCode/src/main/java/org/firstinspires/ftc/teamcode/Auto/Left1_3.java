@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Core.HWMap;
 import org.firstinspires.ftc.teamcode.Mechanism.LinearSlides;
 import org.firstinspires.ftc.teamcode.Auto.RR.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.Auto.RR.drive.SampleMecanumDrive;
@@ -25,8 +26,6 @@ import java.util.ArrayList;
 public class Left1_3 extends LinearOpMode {
     private OpenCvCamera camera;
     private Detection detection;
-    private BNO055IMU imu;
-    public static double imuAngle;
     static final double FEET_PER_METER = 3.28084;
     // Lens intrinsics
     // UNITS ARE PIXELS
@@ -107,9 +106,6 @@ public class Left1_3 extends LinearOpMode {
         linearSLides = new LinearSlides(telemetry, hardwareMap);
         retractOdo = new RetractOdo(telemetry, hardwareMap);
         timer = new ElapsedTime();
-        imu = this.hardwareMap.get(BNO055IMU.class, "imu");
-
-        initializeIMU();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -327,7 +323,6 @@ public class Left1_3 extends LinearOpMode {
                 module.clearBulkCache();
             }
             //coneTransporter.retractOdometryServos();
-            //imuAngle = readFromIMU();
             linearSLides.loop();
             //telemetry.update();
             drive.update();
@@ -347,7 +342,7 @@ public class Left1_3 extends LinearOpMode {
         telemetry.addLine(String.format("Rotation Pitch: %.2f degrees", Math.toDegrees(detection.pose.pitch)));
         telemetry.addLine(String.format("Rotation Roll: %.2f degrees", Math.toDegrees(detection.pose.roll)));
     }
-    public double readFromIMU() {
+    /*public double readFromIMU() {
         return drive.getRawExternalHeading();
     }
     public void initializeIMU() {
@@ -355,6 +350,6 @@ public class Left1_3 extends LinearOpMode {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
         imu.initialize(parameters);
-    }
+    }*/
 
 }

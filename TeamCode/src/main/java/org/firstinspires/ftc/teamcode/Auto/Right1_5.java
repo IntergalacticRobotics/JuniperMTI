@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
@@ -55,7 +56,9 @@ public class Right1_5 extends LinearOpMode {
     private ElapsedTime imuTimer = new ElapsedTime();
     private double lastIMUCall = 0.0;
 
-    /* Auto Constant Variables: **/
+    */
+/* Auto Constant Variables: **//*
+
     private double startX = -36.0; // Start pos X
     private double startY = 65.0; // Start pos Y
     private double preJCTX = -48.0; // Preload junction deposit X value
@@ -65,7 +68,9 @@ public class Right1_5 extends LinearOpMode {
     private double cycleJCTX = -48.0; // Cycle junction deposit X value
     private double cycleJCTY = 12.0; // Cycle junction deposit XY value
 
-    /** Robot Tuning Variables: **/
+    */
+/** Robot Tuning Variables: **//*
+
     private double startXOff = 0.0; // Start pos X offset
     private double startYOff = 0.0; // Start pos Y offset
     private double preXOff = -.75; // Preload junction X offset
@@ -133,10 +138,12 @@ public class Right1_5 extends LinearOpMode {
             }
         });
         telemetry.setMsTransmissionInterval(50);
-        /*
+        */
+/*
          * The INIT-loop:
          * This REPLACES waitForStart!
-         */
+         *//*
+
         while (!isStarted() && !isStopRequested()) {
             for (LynxModule module : hardwareMap.getAll(LynxModule.class)) {
                 module.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
@@ -184,11 +191,15 @@ public class Right1_5 extends LinearOpMode {
             telemetry.update();
             sleep(20);
         }
-        /*
+        */
+/*
          * The START command just came in: now work off the latest snapshot acquired
          * during the init loop.
-         */
-        /* Update the telemetry */
+         *//*
+
+        */
+/* Update the telemetry *//*
+
         if (tagOfInterest != null) {
             telemetry.addLine("Tag snapshot:\n");
             tagToTelemetry(tagOfInterest);
@@ -197,7 +208,9 @@ public class Right1_5 extends LinearOpMode {
             telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
             telemetry.update();
         }
-        /* Start Loop */
+        */
+/* Start Loop *//*
+
         double numericalTag = 0;
         if (tagOfInterest != null) {
             if (tagOfInterest.id == LEFT) {
@@ -399,4 +412,4 @@ public class Right1_5 extends LinearOpMode {
         imu.initialize(parameters);
     }
 
-}
+}*/

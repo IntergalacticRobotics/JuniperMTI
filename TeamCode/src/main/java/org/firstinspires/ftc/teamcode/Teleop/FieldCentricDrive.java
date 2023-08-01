@@ -67,14 +67,14 @@ public class FieldCentricDrive extends HWMap {
         telemetry.addData("Right Back MAH", rightBackMotor.getCurrent(CurrentUnit.MILLIAMPS));
     }
 
-    public float getPitch() {
-        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+/*    public float getPitch() {
+        Orientation angles = .imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         float deltaPitchAngle = angles.thirdAngle - lastAngle.thirdAngle;//This is subtracting roll angle
         // It's going to record angles between -180 and 180
         globalPitchAngle += deltaPitchAngle;
         lastAngle = angles;
         return globalPitchAngle;
-    }
+    }*/
 
     public void drive(double gamepadX, double gamepadY, double gamepadRot, boolean rotationToggle, boolean strafeToggle) {
         if (rotationToggle) {
