@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Core.Controller;
 import org.firstinspires.ftc.teamcode.Mechanism.LinearSlides;
@@ -10,7 +11,6 @@ import java.util.Objects;
 
 @TeleOp(name = "Tele-op")
 public class TeleopV1 extends LinearOpMode {
-
     // declare class variables here
     private Controller controller;
     private FieldCentricDrive fieldCentricDrive;
@@ -162,25 +162,27 @@ public class TeleopV1 extends LinearOpMode {
                     linearSLides.setGripperPosition(1.0);
                 }
 
-                //telemetry.addData("-", "tip is activated");
 
-                //float pitch = fieldCentricDrive.getPitch();
-                //telemetry.addData("Pitch:", pitch);
-                /*if (tip != TIP.ON_STACKS) {
-                    if (pitch <= 75) {
-                        tip = TIP.TIPPING;
-                        fieldCentricDrive.checkifrobotnottipping();
-                    } else if (pitch >= 100) {
-                        tip = TIP.TIPPING;
-                        fieldCentricDrive.checkifrobotnottipping();
-                    } else {
-                        tip = TIP.NOT_TIPPING;
-                        fieldCentricDrive.rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
-                        fieldCentricDrive.rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-                        fieldCentricDrive.leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-                        fieldCentricDrive.leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
-                    }
-                }*/
+                float pitch = fieldCentricDrive.getPitch();
+                telemetry.addData("Pitch:", pitch);
+//                if (tip != TIP.ON_STACKS) {
+//                    if (pitch >= 35) {
+//                        telemetry.addData("-", "tip is activated");
+//                        tip = TIP.TIPPING;
+//                        fieldCentricDrive.checkifrobotnottipping();
+//                    } else if (pitch <= -35) {
+//                        telemetry.addData("-", "tip is activated");
+//                        tip = TIP.TIPPING;
+//                        fieldCentricDrive.checkifrobotnottipping();
+//                    } else {
+//                        tip = TIP.NOT_TIPPING;
+//                        fieldCentricDrive.rightBackMotor.setDirection(DcMotor.Direction.FORWARD);
+//                        fieldCentricDrive.rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+//                        fieldCentricDrive.leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+//                        fieldCentricDrive.leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+//                    }
+//                }
+
                 fieldCentricDrive.addTelemetry();
                 linearSLides.loop();
                 linearSLides.zeroSlides();

@@ -29,7 +29,7 @@ public class HWMap {
     public DcMotorEx linearSlides;
 
     //IMU
-    public IMU imu;
+    public BNO055IMU imu;
     public static double imuAngle;
 
     //Servos

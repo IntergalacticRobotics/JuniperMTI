@@ -1,20 +1,23 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.Core.HWMap;
+
+import java.util.concurrent.TimeUnit;
 
 public class FieldCentricDriveAccelerationControl extends HWMap {
 
     public double STRAFE_TOGGLE_FACTOR = 0.5;
     public double ROTATION_TOGGLE_FACTOR = 0.5;
     public double imuMeasure;
-    public double leftBackPower;
-    public double rightBackPower;
-    public double rightFrontPower;
-    public double leftFrontPower;
+    public static double leftBackPower;
+    public static double rightBackPower;
+    public static double rightFrontPower;
+    public static double leftFrontPower;
     public double rotationEffectivness = 0.7;
     public double xyEffectivness = 0.9;
 
@@ -22,6 +25,9 @@ public class FieldCentricDriveAccelerationControl extends HWMap {
     private double VectorX = 0.0;
     private double VectorY = 0.0;
     private double VectorRot = 0.0;
+
+    private ElapsedTime accelControlTimer = new ElapsedTime();
+
 
     // This variable will store the max accel
     private final double maxAccelDecelXY = 0.3; // VARIABLE NEEDS TO BE CHANGED: As our robot's motor speeds range from 0 to 1 the robot will accel at (maxAccelDecelXY) of the max speed per second. This is for moving forwards and backwards
@@ -52,16 +58,25 @@ public class FieldCentricDriveAccelerationControl extends HWMap {
         double targetSpeedX = gamepadX * xyEffectivness;
         double targetSpeedY = gamepadY * xyEffectivness;
         double targetSpeedRot = -gamepadRot * rotationEffectivness; // Negated because the joystick works in the other direction
-        // Calculate acceleration and deceleration values for each axis
-        double accelX = calculateAccelDecel(VectorX, targetSpeedX, maxAccelDecelXY);
-        double accelY = calculateAccelDecel(VectorY, targetSpeedY, maxAccelDecelXY);
-        double accelRot = calculateAccelDecel(VectorRot, targetSpeedRot, maxAccelDecelRot);
+        if(timer.time(TimeUnit.SECONDS) >= 1 || (leftBackPower == 0 && leftFrontPower == 0 && rightFrontPower == 0 && rightBackPower == 0)){
+            // Calculate acceleration and deceleration values for each axis
+            double accelX = calculateAccelDecel(VectorX, targetSpeedX, maxAccelDecelXY);
+            double accelY = calculateAccelDecel(VectorY, targetSpeedY, maxAccelDecelXY);
+            double accelRot = calculateAccelDecel(VectorRot, targetSpeedRot, maxAccelDecelRot);
 
-        // Update current speeds based on acceleration and deceleration values
-        VectorX += accelX;
-        VectorY += accelY;
-        VectorRot += accelRot;
+            // Update current speeds based on acceleration and deceleration values
+            VectorX += accelX;
+            VectorY += accelY;
+            VectorRot += accelRot;
 
+            accelControlTimer.reset();
+        }
+        telemetry.addData("target speed X: ", targetSpeedX);
+        telemetry.addData("target speed Y: ", targetSpeedY);
+        telemetry.addData("target speed Rot: ", targetSpeedRot);
+        telemetry.addData("current speed X: ", VectorX);
+        telemetry.addData("current speed Y: ", VectorY);
+        telemetry.addData("current speed Rot: ", VectorRot);
 
         //Final calculations for motor speed and direction
         double adjustedTurn = VectorRot;
@@ -93,6 +108,11 @@ public class FieldCentricDriveAccelerationControl extends HWMap {
             leftBackPower /= power + Math.abs(adjustedTurn);
             rightBackPower /= power + Math.abs(adjustedTurn);
         }
+
+        telemetry.addData("Current accel leftBackMotor ", leftBackPower);
+        telemetry.addData("Current accel leftFrontMotor ", leftFrontPower);
+        telemetry.addData("Current accel rightBackMotor ", rightBackPower);
+        telemetry.addData("Current accel rightFrontMotor ", rightFrontPower);
 
         leftBackMotor.setPower(leftBackPower);
         leftFrontMotor.setPower(leftFrontPower);

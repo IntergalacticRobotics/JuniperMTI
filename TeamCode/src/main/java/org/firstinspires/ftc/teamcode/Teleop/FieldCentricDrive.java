@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Teleop;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -37,15 +38,16 @@ public class FieldCentricDrive extends HWMap {
     }
 
     public void checkifrobotnottipping() {
-        if (globalPitchAngle <= 65) {
+
+        if (globalPitchAngle >= 45) {
             //Here it checks if the tip angle exceeds 8 degrees
             rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-            leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+            leftFrontMotor.setDirection(DcMotor.Direction.FORWARD);
             leftFrontMotor.setPower(1.0);
             rightFrontMotor.setPower(1.0);
-        } else if (globalPitchAngle >= 90) {
+        } else if (globalPitchAngle <= -45) {
             rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
-            leftBackMotor.setDirection(DcMotor.Direction.FORWARD);
+            leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
             rightBackMotor.setPower(1.0);
             leftBackMotor.setPower(1.0);
         } else {
@@ -67,14 +69,15 @@ public class FieldCentricDrive extends HWMap {
         telemetry.addData("Right Back MAH", rightBackMotor.getCurrent(CurrentUnit.MILLIAMPS));
     }
 
-/*    public float getPitch() {
-        Orientation angles = .imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+    public float getPitch() {
+        Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         float deltaPitchAngle = angles.thirdAngle - lastAngle.thirdAngle;//This is subtracting roll angle
         // It's going to record angles between -180 and 180
         globalPitchAngle += deltaPitchAngle;
         lastAngle = angles;
         return globalPitchAngle;
-    }*/
+    }
+
 
     public void drive(double gamepadX, double gamepadY, double gamepadRot, boolean rotationToggle, boolean strafeToggle) {
         if (rotationToggle) {

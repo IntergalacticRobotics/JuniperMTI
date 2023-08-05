@@ -180,7 +180,7 @@ public class TeleopAccelerationControl extends LinearOpMode {
                         fieldCentricDrive.leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
                     }
                 }*/
-                fieldCentricDrive.addTelemetry();
+                //fieldCentricDrive.addTelemetry();
                 linearSLides.loop();
                 linearSLides.zeroSlides();
 
